@@ -1,0 +1,35 @@
+import * as BlipSdk from 'blip-sdk';
+import * as WebSocketTransport from 'lime-transport-websocket'
+
+
+let IDENTIFIER = 'chatbotprova';
+let ACCESS_KEY = 'YllBUmZ0NWM4Z2FURWpBdmI3SG0=';
+
+
+let client = new BlipSdk.ClientBuilder()
+    .withIdentifier(IDENTIFIER)
+    .withAccessKey(ACCESS_KEY)
+    .withTransportFactory(() => new WebSocketTransport())
+    .build();
+
+
+client.connect() 
+    .then(function(session) {
+       
+        console.log('Application started. Press Ctrl + c to stop.')
+    })
+    .catch(function(err) { /* Connection failed. */ });
+
+let dados = [];
+fetch('https://api.github.com/orgs/takenet/repos?q=language:C#')
+    .then(response => response.json())
+    .then(res => {
+        let dados = res;
+        console.log(dados);
+        for (const key of dados) {
+            nome = (key.name);
+            descr = (key.description);
+            foto = (key.owner.avatar_url);
+        }
+    })
+    .catch(error => console.error(error))
